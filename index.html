@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="tones.js"></script>
+  <title>声音训练</title>
+</head>
+<body>
+  <div class="piano">
+    <div class="white">
+      <div class="keys c" onclick="keyDown(event)">C</div>
+      <div class="keys d" onclick="keyDown(event)">D</div>
+      <div class="keys e" onclick="keyDown(event)">E</div>
+      <div class="keys f" onclick="keyDown(event)">F</div>
+      <div class="keys g" onclick="keyDown(event)">G</div>
+      <div class="keys a" onclick="keyDown(event)">A</div>
+      <div class="keys b" onclick="keyDown(event)">B</div>
+    </div>
+    <div class="block">
+      <div class="blockKey c#" onclick="tones.play('c#')">c#</div>
+      <div class="blockKey d#" onclick="tones.play('d#')">d#</div>
+      <div class="blockKey hide e" onclick="tones.play('e')"></div>
+      <div class="blockKey f#" onclick="tones.play('f#')">f#</div>
+      <div class="blockKey g#" onclick="tones.play('g#')">g#</div>
+      <div class="blockKey a#" onclick="tones.play('a#')">a#</div>
+    </div>
+  </div>
+  <div class="showTxt"></div>
+  <button type="button" class="playBtn" onclick="ambient()">play</button>
+<script>
+let gameState = 'ready';
+let notes = [ "C","D","E","F","G","A","B"];
+const keyDown = (e)=>{
+  tones.play(e.target.innerHTML)
+  e.target.style.transform = 'translateY(-1rem)';
+  setTimeout(() => {
+    e.target.style.transform = '';
+  }, 300);
+}
+
+const  ambient =() => {
+  if(gameState == 'playing') {
+        gameState = 'ready';
+        document.querySelector('.playBtn').innerHTML = 'play';
+        return
+      }
+      let timing = 1000;
+      let playIndex = 0;
+      let prevTime = tones.getTimeMS();
+      let startTime = new Date().getTime();
+      gameState = 'playing';
+      document.querySelector('.playBtn').innerHTML = 'stop';
+      // 获取随机音乐
+      const getRandomNote = () => {
+        let rmStart = ~~(Math.random()*4);
+        let rmTest = ~~(Math.random()*4);
+        let list = notes.slice(rmStart,rmStart+4)
+        return [...list,notes[rmStart+rmTest],notes[rmStart+rmTest],notes[rmStart+rmTest]]
+      }
+      
+      let list = getRandomNote()
+      console.log('---[ list ]-55', list)
+      updateTimer = ()=> {
+        const currentTime = new Date().getTime(); // 获取当前时间
+        const elapsedTime = currentTime - startTime; // 计算经过的时间
+        if(elapsedTime > timing) {
+            tones.play(list[playIndex])
+            document.querySelector('.showTxt').innerHTML = list[playIndex];
+            playIndex++;
+            if(playIndex >= list.length) {
+              list = getRandomNote();
+              console.log('---[ list ]-65', list)
+              playIndex = 0;
+            }
+            startTime = currentTime;
+        }
+        if(gameState=='playing')requestAnimationFrame(updateTimer);
+      }
+
+      updateTimer();
+  }
+</script>
+</body>
+</html>
