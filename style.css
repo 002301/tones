@@ -63,14 +63,14 @@ html,body{
   position:absolute;
   width: 10rem;height: 10rem;
   margin:auto;
-  inset:60% 0;
+  inset:80% 0;
   border-radius: 5rem;
 }
 .showTxt{
   position:absolute;
   width: 10rem;height: 10rem;
   margin:auto;
-  inset:0;
+  inset:70% 0;
   border:0;
   font-size: 6rem;
   background:transparent;
