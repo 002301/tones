@@ -10,13 +10,13 @@
 <body>
   <div class="piano">
     <div class="white">
-      <div class="keys c" onclick="keyDown(event)">C</div>
-      <div class="keys d" onclick="keyDown(event)">D</div>
-      <div class="keys e" onclick="keyDown(event)">E</div>
-      <div class="keys f" onclick="keyDown(event)">F</div>
-      <div class="keys g" onclick="keyDown(event)">G</div>
-      <div class="keys a" onclick="keyDown(event)">A</div>
-      <div class="keys b" onclick="keyDown(event)">B</div>
+      <div class="keys C" onclick="keyDown(event)">C</div>
+      <div class="keys D" onclick="keyDown(event)">D</div>
+      <div class="keys E" onclick="keyDown(event)">E</div>
+      <div class="keys F" onclick="keyDown(event)">F</div>
+      <div class="keys G" onclick="keyDown(event)">G</div>
+      <div class="keys A" onclick="keyDown(event)">A</div>
+      <div class="keys B" onclick="keyDown(event)">B</div>
     </div>
     <div class="block">
       <div class="blockKey c#" onclick="tones.play('c#')">c#</div>
@@ -61,18 +61,23 @@ const  ambient =() => {
       }
       
       let list = getRandomNote()
-      console.log('---[ list ]-55', list)
       updateTimer = ()=> {
         const currentTime = new Date().getTime(); // 获取当前时间
         const elapsedTime = currentTime - startTime; // 计算经过的时间
         if(elapsedTime > timing) {
-            tones.play(list[playIndex])
+            console.log('---[ gameState ]-75', gameState,playIndex)
+            document.querySelector(`.${list[playIndex]}`).click()
             document.querySelector('.showTxt').innerHTML = list[playIndex];
             playIndex++;
             if(playIndex >= list.length) {
               list = getRandomNote();
-              console.log('---[ list ]-65', list)
               playIndex = 0;
+              gameState='ready'
+              
+              setTimeout(() => {
+                gameState='playing'
+                updateTimer()
+              }, 2000);
             }
             startTime = currentTime;
         }
