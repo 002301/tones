@@ -11,7 +11,7 @@ html,body,ul{
   position:absolute;
   width: 100%;
   max-width:75rem;
-  height: 40rem;
+  height: 30rem;
   font-size: 4rem;
   overflow: hidden;
   inset:auto 0 0 ;
@@ -65,7 +65,7 @@ html,body,ul{
   width: 100%;
   height: 10rem;
   border-radius: 2rem 2rem 0 0;
-  bottom:49rem;
+  bottom:39rem;
   
 }
 .showTxt{
@@ -79,7 +79,7 @@ html,body,ul{
 }
 .btns{
   position: absolute;
-  bottom: 40.5rem;
+  bottom: 29rem;
   height: 10rem;
   width: 100%;
   left:0;
