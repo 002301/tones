@@ -8,7 +8,7 @@
   <title>声音训练</title>
 </head>
 <body>
-  <div class="piano">
+  <div class="piano" draggable="true">
     <div class="white">
       <div class="keys C" onclick="keyDown(event)">C</div>
       <div class="keys D" onclick="keyDown(event)">D</div>
@@ -19,19 +19,60 @@
       <div class="keys B" onclick="keyDown(event)">B</div>
     </div>
     <div class="block">
-      <div class="blockKey c#" onclick="tones.play('c#')">c#</div>
-      <div class="blockKey d#" onclick="tones.play('d#')">d#</div>
+      <div class="blockKey c#" onclick="tones.play('c#')"></div>
+      <div class="blockKey d#" onclick="tones.play('d#')"></div>
       <div class="blockKey hide e" onclick="tones.play('e')"></div>
-      <div class="blockKey f#" onclick="tones.play('f#')">f#</div>
-      <div class="blockKey g#" onclick="tones.play('g#')">g#</div>
-      <div class="blockKey a#" onclick="tones.play('a#')">a#</div>
+      <div class="blockKey f#" onclick="tones.play('f#')"></div>
+      <div class="blockKey g#" onclick="tones.play('g#')"></div>
+      <div class="blockKey a#" onclick="tones.play('a#')"></div>
     </div>
   </div>
   <div class="showTxt"></div>
   <button type="button" class="playBtn" onclick="ambient()">play</button>
+  <ul class="btns">
+    <!-- 单选按钮 -->
+    Type:
+    <li>
+      <input type="radio" name="btns" id="btn0" checked onchange="changeType(event)"  />
+    <label for="btn0">CDEF</label>
+    </li>
+    <li>
+      <input type="radio" name="btns" id="btn1" onchange="changeType(event)"/>
+      <label for="btn1">CDEFGAB</label>
+    </li>
+    <li>
+      <input type="radio" name="btns" id="btn2" onchange="changeType(event)"/>
+      <label for="btn2">Random</label>
+    </li>
+  </l>
 <script>
 let gameState = 'ready';
 let notes = [ "C","D","E","F","G","A","B"];
+let type = 0
+
+  const getRandomNote = () => {
+    let rmStart = ~~(Math.random()*4);
+    let rmTest = ~~(Math.random()*4);
+    let list = notes.slice(rmStart,rmStart+4)
+    return [...list,notes[rmStart+rmTest],notes[rmStart+rmTest],notes[rmStart+rmTest]]
+  }
+  const getCDEF = () => {
+    let rmTest = ~~(Math.random()*4);
+    let list = notes.slice(0,4)
+    return [...list,notes[rmTest],notes[rmTest],notes[rmTest]]
+  }
+  const getCDEFGAB = () => {
+    let rmTest = ~~(Math.random()*7);
+    return [...notes,notes[rmTest],notes[rmTest],notes[rmTest]]
+  }
+const changeType = (e)=>{
+  gameState='ready'
+  type = e.target.id.slice(-1)
+  gameState == 'playing'
+  ambient()
+}
+let exeType = [getCDEF,getCDEFGAB,getRandomNote];
+// 钢琴按键
 const keyDown = (e)=>{
   tones.play(e.target.innerHTML)
   e.target.style.transform = 'translateY(-1rem)';
@@ -53,27 +94,21 @@ const  ambient =() => {
       gameState = 'playing';
       document.querySelector('.playBtn').innerHTML = 'stop';
       // 获取随机音乐
-      const getRandomNote = () => {
-        let rmStart = ~~(Math.random()*4);
-        let rmTest = ~~(Math.random()*4);
-        let list = notes.slice(rmStart,rmStart+4)
-        return [...list,notes[rmStart+rmTest],notes[rmStart+rmTest],notes[rmStart+rmTest]]
-      }
+
       
-      let list = getRandomNote()
+      let list = exeType[type]();
       updateTimer = ()=> {
         const currentTime = new Date().getTime(); // 获取当前时间
         const elapsedTime = currentTime - startTime; // 计算经过的时间
         if(elapsedTime > timing) {
-            console.log('---[ gameState ]-75', gameState,playIndex)
+            // console.log('---[ gameState ]-75', gameState,playIndex)
             document.querySelector(`.${list[playIndex]}`).click()
             document.querySelector('.showTxt').innerHTML = list[playIndex];
             playIndex++;
             if(playIndex >= list.length) {
-              list = getRandomNote();
+              list = exeType[type]()
               playIndex = 0;
               gameState='ready'
-              
               setTimeout(() => {
                 gameState='playing'
                 updateTimer()
@@ -86,6 +121,7 @@ const  ambient =() => {
 
       updateTimer();
   }
+
 </script>
 </body>
 </html>
