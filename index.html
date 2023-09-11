@@ -8,6 +8,23 @@
   <title>声音训练</title>
 </head>
 <body>
+    <ul class="btns">
+      Type:
+      <li>
+        <input type="radio" name="btns" id="btn0" checked onchange="changeType(event)"  />
+      <label for="btn0">CDEF</label>
+      </li>
+      <li>
+        <input type="radio" name="btns" id="btn1" onchange="changeType(event)"/>
+        <label for="btn1">CDEFGAB</label>
+      </li>
+      <li>
+        <input type="radio" name="btns" id="btn2" onchange="changeType(event)"/>
+        <label for="btn2">Random</label>
+      </li>
+    </ul>
+    <div class="showTxt"></div>
+    <button type="button" class="playBtn" onclick="ambient()">play</button>
   <div class="piano" draggable="true">
     <div class="white">
       <div class="keys C" onclick="keyDown(event)">C</div>
@@ -27,24 +44,8 @@
       <div class="blockKey a#" onclick="tones.play('a#')"></div>
     </div>
   </div>
-  <div class="showTxt"></div>
-  <button type="button" class="playBtn" onclick="ambient()">play</button>
-  <ul class="btns">
-    <!-- 单选按钮 -->
-    Type:
-    <li>
-      <input type="radio" name="btns" id="btn0" checked onchange="changeType(event)"  />
-    <label for="btn0">CDEF</label>
-    </li>
-    <li>
-      <input type="radio" name="btns" id="btn1" onchange="changeType(event)"/>
-      <label for="btn1">CDEFGAB</label>
-    </li>
-    <li>
-      <input type="radio" name="btns" id="btn2" onchange="changeType(event)"/>
-      <label for="btn2">Random</label>
-    </li>
-  </l>
+
+
 <script>
 let gameState = 'ready';
 let notes = [ "C","D","E","F","G","A","B"];
